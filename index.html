@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ボタンのテスト</title>
+</head>
+
+<body>
+
+    <button id="my-button">ボタン</button>
+    <p id="count">0本</p>
+
+    <script>
+        const btn = document.getElementById('my-button');
+        const countEl = document.getElementById('count');
+
+        let records = [];
+        const saved = localStorage.getItem('records');
+        if(saved !== null){
+            records = JSON.parse(saved);
+        }
+
+        countEl.textContent = records.length + '本';
+
+        btn.addEventListener('click', function() {
+            records.push('1本');
+            countEl.textContent = records.length + '本';
+            localStorage.setItem('records', JSON.stringify(records));
+        });
+    </script>
+</body>
+</html>
