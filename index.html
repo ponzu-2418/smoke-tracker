@@ -10,15 +10,22 @@
     <button id="my-button">ボタン</button>
     <button id="del-button">削除</button>
     <p id="count">0本</p>
+    <p id="total">累計金額</p>
 
     <script>
         const btn = document.getElementById('my-button');
         const delBtn = document.getElementById('del-button');
         const countEl = document.getElementById('count');
+        const countTl = document.getElementById('total');
 
         function updateDisplay(){
             const todayCount = records.filter(r => r === todayStr).length;
-            countEl.textContent = todayCount + '本/目標' + goal + '本';
+
+            let todayTotal = price * todayCount
+            let total = price * records.length
+
+            countEl.textContent = todayCount + '本/目標' + goal + '本/' + todayTotal;
+            countTl.textContent = '累計金額' + total
             if(todayCount > goal){
                 countEl.style.color = 'red'
             }else{
@@ -34,6 +41,7 @@
         console.log(todayStr)
 
         let goal = 5
+        let price = 50
 
         let records = [];
         const saved = localStorage.getItem('records');
