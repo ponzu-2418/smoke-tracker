@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>ボタンのテスト</title>
 </head>
 
@@ -11,6 +12,7 @@
     <button id="del-button">削除</button>
     <p id="count">0本</p>
     <p id="total">累計金額</p>
+    <canvas id="myChart"></canvas>
 
     <script>
         const btn = document.getElementById('my-button');
@@ -33,12 +35,11 @@
             }
         }
 
-        let today = new Date()
-        let year = today.getFullYear()
-        let month = today.getMonth() + 1
-        let date = today.getDate()
-        let todayStr = year + "-" + month + "-" + date
-        console.log(todayStr)
+        function toStr(d){
+            return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+        }
+
+        let todayStr = toStr(new Date());
 
         let goal = 5
         let price = 50
@@ -66,6 +67,34 @@
             updateDisplay();
             localStorage.setItem('records', JSON.stringify(records));
         })
+
+        let count = {};
+        records.forEach(function(i){
+            count[i] = (count[i] || 0) + 1;
+        });
+
+        let labels = [];
+        for(let i = 6; i >= 0; i--){
+            let d = new Date();
+            d.setDate(d.getDate() - i);
+            labels.push(toStr(d));
+        }
+
+        let data = labels.map(function(day){
+            return count[day] || 0;
+        });
+        console.log(data);
+
+        new Chart(document.getElementById('myChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '本数',
+                    data: data
+                }]
+            }
+        });
     </script>
 </body>
 </html>
