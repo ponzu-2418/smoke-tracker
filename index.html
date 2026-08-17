@@ -14,18 +14,32 @@
         const btn = document.getElementById('my-button');
         const countEl = document.getElementById('count');
 
+        function updateDisplay(){
+            const todayCount = records.filter(r => r === todayStr).length;
+            countEl.textContent = todayCount + '本';
+        }
+
+        let today = new Date()
+        let year = today.getFullYear()
+        let month = today.getMonth() + 1
+        let date = today.getDate()
+        let todayStr = year + "-" + month + "-" + date
+        console.log(todayStr)
+
         let records = [];
         const saved = localStorage.getItem('records');
+
         if(saved !== null){
             records = JSON.parse(saved);
         }
 
-        countEl.textContent = records.length + '本';
+        updateDisplay();
 
         btn.addEventListener('click', function() {
-            records.push('1本');
-            countEl.textContent = records.length + '本';
+            records.push(todayStr);
+            updateDisplay();
             localStorage.setItem('records', JSON.stringify(records));
+            localStorage.setItem('todayStr', todayStr);
         });
     </script>
 </body>
