@@ -8,15 +8,22 @@
 <body>
 
     <button id="my-button">ボタン</button>
+    <button id="del-button">削除</button>
     <p id="count">0本</p>
 
     <script>
         const btn = document.getElementById('my-button');
+        const delBtn = document.getElementById('del-button');
         const countEl = document.getElementById('count');
 
         function updateDisplay(){
             const todayCount = records.filter(r => r === todayStr).length;
-            countEl.textContent = todayCount + '本';
+            countEl.textContent = todayCount + '本/目標' + goal + '本';
+            if(todayCount > goal){
+                countEl.style.color = 'red'
+            }else{
+                countEl.style.color = 'black'
+            }
         }
 
         let today = new Date()
@@ -25,6 +32,8 @@
         let date = today.getDate()
         let todayStr = year + "-" + month + "-" + date
         console.log(todayStr)
+
+        let goal = 5
 
         let records = [];
         const saved = localStorage.getItem('records');
@@ -39,8 +48,16 @@
             records.push(todayStr);
             updateDisplay();
             localStorage.setItem('records', JSON.stringify(records));
-            localStorage.setItem('todayStr', todayStr);
         });
+
+        delBtn.addEventListener('click', function(){
+            const todayCount = records.filter(r => r === todayStr).length;
+            if(todayCount > 0){
+                records.pop()
+            }
+            updateDisplay();
+            localStorage.setItem('records', JSON.stringify(records));
+        })
     </script>
 </body>
 </html>
