@@ -109,9 +109,27 @@
             let data = labels.map(function(day){
                 return count[day] || 0;
             });
+            const achieved = data.filter(function(n){
+                return n <= goal;
+            }).length;
+
+            const todayNum = data[6];
+            const yesterdayNum = data[5];
+            const diff = todayNum - yesterdayNum;
+            let msg;
+            if(diff < 0){
+                msg = '昨日より' + (-diff) + '本減りました'
+            }else if(diff > 0){
+                msg = '昨日より' + diff + '本増えました';
+            }else{
+                msg = '昨日と同じ本数です';
+            }
 
             myChart.data.datasets[0].data = data;
             myChart.update();
+
+            document.getElementById('comment').textContent =
+                msg + '  /  7日中' + achieved + '日、目標を達成しました';
         }
 
         document.getElementById('nav1').addEventListener('click', function(){
@@ -183,6 +201,7 @@
                 }]
             }
         });
+
         updateChart();
 
     </script>
