@@ -2,23 +2,64 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>ボタンのテスト</title>
+
+    <style>
+        #my-button{
+            font-size: 30px;
+            padding: 20px 40px;
+        }
+        #del-button{
+            font-size: 30px;
+            padding: 20px 40px;
+        }
+        .hidden{
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
+    <div id="nav">
+        <button id="nav1">記録</button>
+        <button id="nav2">金額</button>
+        <button id="nav3">グラフ</button>
+    </div>
 
-    <button id="my-button">ボタン</button>
-    <button id="del-button">削除</button>
-    <p id="count">0本</p>
-    <p id="total">累計金額</p>
-    <canvas id="myChart"></canvas>
+    <div id="screen1">
+        <p id="cig">🚬</p>
+        <p id="date1"></p>
+        <p id="count">0本</p>
+        <button id="my-button">吸った</button>
+        <button id="del-button">削除</button>
+    </div>
+
+    <div id="screen2">
+        <p id="date2"></p>
+        <p id="compare"></p>
+        <p id="todayMoney"></p>
+        <p id="total"></p>
+    </div>
+
+    <div id="screen3">
+        <canvas id="myChart"></canvas>
+        <p id="comment"></p>
+    </div>
 
     <script>
         const btn = document.getElementById('my-button');
         const delBtn = document.getElementById('del-button');
         const countEl = document.getElementById('count');
         const countTl = document.getElementById('total');
+
+        function showScreen(n){
+            document.getElementById('screen1').classList.add('hidden')
+            document.getElementById('screen2').classList.add('hidden')
+            document.getElementById('screen3').classList.add('hidden')
+            document.getElementById('screen' + n).classList.remove('hidden')
+        }
 
         function updateDisplay(){
             const todayCount = records.filter(r => r === todayStr).length;
@@ -52,6 +93,16 @@
             myChart.data.datasets[0].data = data;
             myChart.update();
         }
+
+        document.getElementById('nav1').addEventListener('click', function(){
+            showScreen(1);
+        })
+        document.getElementById('nav2').addEventListener('click', function(){
+            showScreen(2);
+        })        
+        document.getElementById('nav3').addEventListener('click', function(){
+            showScreen(3);
+        })
 
         let todayStr = toStr(new Date());
 
