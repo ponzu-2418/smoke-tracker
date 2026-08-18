@@ -62,12 +62,32 @@
         }
 
         function updateDisplay(){
+            document.getElementById('date1').textContent = todayStr;
+            document.getElementById('date2').textContent = todayStr;
             const todayCount = records.filter(r => r === todayStr).length;
 
             let todayTotal = price * todayCount
             let total = price * records.length
 
-            countEl.textContent = todayCount + '本/目標' + goal + '本/' + todayTotal;
+            let mark;
+            if(todayCount < goal){
+                mark = '<';
+                compare.style.color = 'black';
+            }else if(todayCount > goal){
+                mark = '>';
+                compare.style.color = 'red';
+            }else{
+                mark = '=';
+                compare.style.color = 'black';
+            }
+
+            document.getElementById('compare').textContent =
+                '今日 ' + todayCount + '本 ' + mark + ' 目標 ' + goal + '本'; 
+
+            document.getElementById('todayMoney').textContent =
+                '今日 ' + todayTotal + '円';
+
+            countEl.textContent = todayCount + '本';
             countTl.textContent = '累計金額' + total
             if(todayCount > goal){
                 countEl.style.color = 'red'
